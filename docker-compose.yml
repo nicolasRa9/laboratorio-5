@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  c1:
+    build:
+      context: ./C1
+    container_name: C1
+    image: ubuntu_16_10
+    ports:
+      - "2221:22"
+    tty: true
+
+  c2:
+    build:
+      context: ./C2
+    container_name: C2
+    image: ubuntu_18_10
+    ports:
+      - "2222:22"
+    tty: true
+
+  c3:
+    build:
+      context: ./C3
+    container_name: C3
+    image: ubuntu_20_10
+    ports:
+      - "2223:22"
+    tty: true
+
+  c4:
+    build:
+      context: ./C4
+    container_name: C4
+    image: ubuntu_22_10
+    ports:
+      - "2224:22"
+    tty: true
