@@ -1,0 +1,24 @@
+FROM ubuntu:22.10
+
+# Cambiar los repositorios a old-releases
+RUN sed -i 's|archive.ubuntu.com|old-releases.ubuntu.com|g' /etc/apt/sources.list && \
+    sed -i 's|security.ubuntu.com|old-releases.ubuntu.com|g' /etc/apt/sources.list
+
+# Instalar OpenSSH
+RUN apt-get update && apt-get install -y openssh-server && \
+    mkdir -p /var/run/sshd
+
+# Configurar una contraseña para el usuario root
+RUN echo 'root:password' | chpasswd
+
+# Permitir acceso remoto al root
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+# Evitar problemas con resolv.conf al usar systemd
+RUN ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf || true
+
+# Exponer el puerto SSH
+EXPOSE 22
+
+# Iniciar OpenSSH cuando arranque el contenedor
+CMD ["/usr/sbin/sshd", "-D"]
